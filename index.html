@@ -3,212 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas de Numeração - Prof. Marcos Antônio</title>
+    <title>Sistema Maia - Prof. Marcos Antônio</title>
     <style>
         :root {
             --primary-blue: #003366;
             --accent-orange: #f39c12;
-            --light-bg: #f8f9fa;
-            --border-radius: 18px;
+            --maia-bg: #fdf5e6;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--light-bg);
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--maia-bg);
             margin: 0;
             padding: 0;
-            color: #333;
-            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no celular */
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* CABEÇALHO */
         header {
             background-color: var(--primary-blue);
             color: white;
-            padding: 40px 15px;
-            text-align: center;
-            border-bottom: 8px solid var(--accent-orange);
+            padding: 20px;
+            border-bottom: 5px solid var(--accent-orange);
         }
 
-        .escola-destaque {
-            font-size: clamp(1.5rem, 6vw, 2.8rem);
-            font-weight: 900;
-            display: block;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .nte-sub {
-            font-size: 1.1rem;
-            color: var(--accent-orange);
-            font-weight: bold;
-            display: block;
-            margin-bottom: 20px;
-        }
-
-        .prof-box {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            display: inline-block;
-            padding-top: 15px;
-            font-size: 1.1rem;
-        }
-
-        /* CONTAINER E GRID */
         .container {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 15px;
+            padding: 15px;
+            max-width: 500px;
+            margin: auto;
         }
 
-        h2 { 
-            text-align: center; 
-            color: var(--primary-blue); 
-            margin-bottom: 30px;
-            font-size: 1.6rem;
-        }
-
-        .grid-sistemas {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px;
-        }
-
-        /* BOTÕES OTIMIZADOS PARA TOQUE */
-        .btn-sistema {
-            background-color: white;
-            border: 2px solid #ddd;
-            border-radius: var(--border-radius);
-            padding: 30px 15px; /* Mais espaço para o dedo */
-            text-decoration: none;
-            color: var(--primary-blue);
-            text-align: center;
-            transition: all 0.2s ease;
+        /* Área onde o número é construído */
+        .board {
+            background: #fff;
+            border: 4px dashed var(--primary-blue);
+            min-height: 150px;
+            margin: 20px 0;
+            border-radius: 15px;
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse; /* Maias empilham de baixo para cima */
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
+            padding: 20px;
         }
 
-        /* Ícones Visuais (Emojis representativos) */
-        .btn-sistema::before {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        /* Inserção de símbolos via pseudo-elementos */
-        .maia::before { content: "●●●"; color: var(--accent-orange); letter-spacing: 2px; }
-        .egipcio::before { content: "𓂭"; }
-        .romano::before { content: "XVII"; font-weight: bold; }
-        .binario::before { content: "0101"; font-family: monospace; }
-        .babilonico::before { content: "▼◀"; }
-
-        /* Feedback visual ao tocar */
-        .btn-sistema:active {
-            transform: scale(0.96);
-            background-color: #f0f7ff;
-            border-color: var(--primary-blue);
+        /* Estilo dos Símbolos Maias */
+        .simbolo-maia {
+            background: #444;
+            border-radius: 5px;
+            transition: transform 0.1s;
         }
 
-        .btn-sistema strong {
-            font-size: 1.4rem;
-            margin-bottom: 5px;
+        .ponto {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 2px;
+            background: var(--primary-blue);
         }
 
-        .btn-sistema span {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 500;
+        .barra {
+            width: 120px;
+            height: 15px;
+            background: var(--primary-blue);
+            margin: 5px 0;
         }
 
-        /* Estilo para centralizar o último botão */
-        .grid-sistemas a:last-child {
-            grid-column: 1 / span 2; 
-            justify-self: center;   
-            width: calc(100% - 0px); 
-        }
-
-        /* Ajuste responsivo para telas maiores */
-        @media (min-width: 600px) {
-            .grid-sistemas a:last-child {
-                width: calc(50% - 7px);
-            }
-        }
-
-        /* Ajuste para telas muito pequenas (1 coluna) */
-        @media (max-width: 480px) {
-            .grid-sistemas {
-                grid-template-columns: 1fr;
-            }
-            .grid-sistemas a:last-child {
-                grid-column: auto;
-                width: 100%;
-            }
-            .btn-sistema {
-                padding: 25px 15px;
-            }
-        }
-
-        footer {
-            margin-top: 60px;
-            text-align: center;
-            padding: 25px;
+        /* Painel de Peças (Botões de clicar) */
+        .toolbox {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
             background: #eee;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tool {
+            background: white;
+            border: 2px solid var(--primary-blue);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .tool:active {
+            transform: scale(0.9);
+            background-color: var(--accent-orange);
+        }
+
+        .controles {
+            margin-top: 20px;
+        }
+
+        button.btn-acao {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            color: #777;
-            font-size: 0.9rem;
+            margin: 5px;
+        }
+
+        .limpar { background: #e74c3c; color: white; }
+        .voltar { background: var(--primary-blue); color: white; text-decoration: none; display: inline-block; }
+
+        .info-valor {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <span class="escola-destaque">COLÉGIO ESTADUAL PRISCO VIANA</span>
-    <span class="nte-sub">NTE 11 - Tecnologia Educacional</span>
-    
-    <div class="prof-box">
-        Professor: <strong>Marcos Antônio de Jesus</strong>
-    </div>
+    <h1>Sistema Maia</h1>
+    <p>Toque nos símbolos para construir o número</p>
 </header>
 
 <div class="container">
-    <h2>Explore os Sistemas de Numeração</h2>
+    <div class="info-valor">Valor: <span id="resultado">0</span></div>
     
-    <div class="grid-sistemas">
-        <a href="maia.html" class="btn-sistema maia">
-            <strong>Maia</strong>
-            <span>Vigesimal (Base 20)</span>
-        </a>
+    <div class="board" id="board">
+        </div>
 
-        <a href="egipcio.html" class="btn-sistema egipcio">
-            <strong>Egípcio</strong>
-            <span>Aditivo (Hieróglifos)</span>
-        </a>
+    <div class="toolbox">
+        <div class="tool" onclick="adicionar(1)">
+            <div class="ponto"></div>
+            <div style="font-size: 12px; color: #666;">Ponto (1)</div>
+        </div>
+        <div class="tool" onclick="adicionar(5)">
+            <div class="barra"></div>
+            <div style="font-size: 12px; color: #666;">Barra (5)</div>
+        </div>
+    </div>
 
-        <a href="romano.html" class="btn-sistema romano">
-            <strong>Romano</strong>
-            <span>Símbolos de I a M</span>
-        </a>
-
-        <a href="binario.html" class="btn-sistema binario">
-            <strong>Binário</strong>
-            <span>Posicional (Base 2)</span>
-        </a>
-
-        <a href="babilonico.html" class="btn-sistema babilonico">
-            <strong>Babilônico</strong>
-            <span>Sexagesimal (Base 60)</span>
-        </a>
+    <div class="controles">
+        <button class="btn-acao limpar" onclick="limpar()">Limpar Tudo</button>
+        <br><br>
+        <a href="index.html" class="btn-acao voltar">Voltar ao Início</a>
     </div>
 </div>
 
-<footer>
-    Matemática & Tecnologia Educacional &bull; 2026
-</footer>
+<script>
+    let valorTotal = 0;
+    const board = document.getElementById('board');
+    const resultadoExibido = document.getElementById('resultado');
+
+    function adicionar(valor) {
+        if (valorTotal + valor > 19) {
+            alert("Neste nível (unidades), o máximo é 19. Para números maiores, usa-se a base vigesimal superior.");
+            return;
+        }
+
+        valorTotal += valor;
+        renderizar();
+    }
+
+    function limpar() {
+        valorTotal = 0;
+        renderizar();
+    }
+
+    function renderizar() {
+        board.innerHTML = '';
+        resultadoExibido.innerText = valorTotal;
+
+        // Desenhar Barras (5)
+        let numBarras = Math.floor(valorTotal / 5);
+        for (let i = 0; i < numBarras; i++) {
+            const b = document.createElement('div');
+            b.className = 'barra';
+            board.appendChild(b);
+        }
+
+        // Desenhar Pontos (1) acima das barras
+        let numPontos = valorTotal % 5;
+        if (numPontos > 0) {
+            const containerPontos = document.createElement('div');
+            for (let i = 0; i < numPontos; i++) {
+                const p = document.createElement('div');
+                p.className = 'ponto';
+                containerPontos.appendChild(p);
+            }
+            board.appendChild(containerPontos);
+        }
+
+        if (valorTotal === 0) {
+            board.innerHTML = '<span style="color:#ccc">Toque nos símbolos abaixo</span>';
+        }
+    }
+    
+    renderizar(); // Inicia o quadro vazio
+</script>
 
 </body>
 </html>
