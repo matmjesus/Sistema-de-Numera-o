@@ -9,6 +9,7 @@
             --primary-blue: #003366;
             --accent-orange: #f39c12;
             --light-bg: #f8f9fa;
+            --border-radius: 18px;
         }
 
         body {
@@ -17,19 +18,20 @@
             margin: 0;
             padding: 0;
             color: #333;
+            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no celular */
         }
 
-        /* CABEÇALHO COM MÁXIMO DESTAQUE */
+        /* CABEÇALHO */
         header {
             background-color: var(--primary-blue);
             color: white;
-            padding: 50px 20px;
+            padding: 40px 15px;
             text-align: center;
             border-bottom: 8px solid var(--accent-orange);
         }
 
         .escola-destaque {
-            font-size: clamp(1.8rem, 5vw, 3rem); /* Responsivo e Grande */
+            font-size: clamp(1.5rem, 6vw, 2.8rem);
             font-weight: 900;
             display: block;
             letter-spacing: 1px;
@@ -39,96 +41,126 @@
         }
 
         .nte-sub {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--accent-orange);
             font-weight: bold;
             display: block;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .prof-box {
-            border-top: 1px solid rgba(255,255,255,0.3);
+            border-top: 1px solid rgba(255,255,255,0.2);
             display: inline-block;
             padding-top: 15px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
-        /* LAYOUT DOS BOTÕES EM 2 POR LINHA */
+        /* CONTAINER E GRID */
         .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
         }
 
         h2 { 
             text-align: center; 
             color: var(--primary-blue); 
-            margin-bottom: 40px;
-            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
         }
 
         .grid-sistemas {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Força 2 colunas */
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px;
         }
 
-        /* Estilo para centralizar o último botão (o 5º item) */
-        .grid-sistemas a:last-child {
-            grid-column: 1 / span 2; /* Ocupa as duas colunas */
-            justify-self: center;    /* Centraliza no meio */
-            width: calc(50% - 10px); /* Mantém o mesmo tamanho dos outros */
-        }
-
+        /* BOTÕES OTIMIZADOS PARA TOQUE */
         .btn-sistema {
             background-color: white;
-            border: 3px solid var(--primary-blue);
-            border-radius: 15px;
-            padding: 25px 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 30px 15px; /* Mais espaço para o dedo */
             text-decoration: none;
             color: var(--primary-blue);
             text-align: center;
             transition: all 0.2s ease;
-            box-shadow: 0 6px 0 var(--primary-blue);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-sistema:hover {
-            transform: translateY(3px);
-            box-shadow: 0 3px 0 var(--primary-blue);
-            background-color: #ebf2f9;
+        /* Ícones Visuais (Emojis representativos) */
+        .btn-sistema::before {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Inserção de símbolos via pseudo-elementos */
+        .maia::before { content: "●●●"; color: var(--accent-orange); letter-spacing: 2px; }
+        .egipcio::before { content: "𓂭"; }
+        .romano::before { content: "XVII"; font-weight: bold; }
+        .binario::before { content: "0101"; font-family: monospace; }
+        .babilonico::before { content: "▼◀"; }
+
+        /* Feedback visual ao tocar */
+        .btn-sistema:active {
+            transform: scale(0.96);
+            background-color: #f0f7ff;
+            border-color: var(--primary-blue);
         }
 
         .btn-sistema strong {
-            font-size: 1.6rem; /* Título bem grande */
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
         }
 
         .btn-sistema span {
-            font-size: 1rem;
-            color: #555;
+            font-size: 0.9rem;
+            color: #666;
             font-weight: 500;
         }
 
-        /* Ajuste para telas pequenas */
-        @media (max-width: 500px) {
+        /* Estilo para centralizar o último botão */
+        .grid-sistemas a:last-child {
+            grid-column: 1 / span 2; 
+            justify-self: center;   
+            width: calc(100% - 0px); 
+        }
+
+        /* Ajuste responsivo para telas maiores */
+        @media (min-width: 600px) {
+            .grid-sistemas a:last-child {
+                width: calc(50% - 7px);
+            }
+        }
+
+        /* Ajuste para telas muito pequenas (1 coluna) */
+        @media (max-width: 480px) {
             .grid-sistemas {
-                grid-template-columns: 1fr; /* 1 coluna no celular */
+                grid-template-columns: 1fr;
             }
             .grid-sistemas a:last-child {
+                grid-column: auto;
                 width: 100%;
+            }
+            .btn-sistema {
+                padding: 25px 15px;
             }
         }
 
         footer {
-            margin-top: 80px;
+            margin-top: 60px;
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             background: #eee;
             font-weight: bold;
             color: #777;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -147,27 +179,27 @@
     <h2>Explore os Sistemas de Numeração</h2>
     
     <div class="grid-sistemas">
-        <a href="maia.html" class="btn-sistema">
+        <a href="maia.html" class="btn-sistema maia">
             <strong>Maia</strong>
             <span>Vigesimal (Base 20)</span>
         </a>
 
-        <a href="egipcio.html" class="btn-sistema">
+        <a href="egipcio.html" class="btn-sistema egipcio">
             <strong>Egípcio</strong>
             <span>Aditivo (Hieróglifos)</span>
         </a>
 
-        <a href="romano.html" class="btn-sistema">
+        <a href="romano.html" class="btn-sistema romano">
             <strong>Romano</strong>
             <span>Símbolos de I a M</span>
         </a>
 
-        <a href="binario.html" class="btn-sistema">
+        <a href="binario.html" class="btn-sistema binario">
             <strong>Binário</strong>
             <span>Posicional (Base 2)</span>
         </a>
 
-        <a href="babilonico.html" class="btn-sistema">
+        <a href="babilonico.html" class="btn-sistema babilonico">
             <strong>Babilônico</strong>
             <span>Sexagesimal (Base 60)</span>
         </a>
@@ -179,5 +211,4 @@
 </footer>
 
 </body>
-
 </html>
